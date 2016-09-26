@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 /*
   [Game Calls & Makes]
     This component takes care of calls and makes.
+    Right now this is being refactored. This file is not being used anywhere yet.
 */
 
 export class GamePlayComponent extends Component {
@@ -282,11 +283,11 @@ export class GamePlayComponent extends Component {
     let minimumNeeded = this.props.data.minimumCall();
     let totalCalled = this.state.calls.reduce(function(a, b) { return a + b; });
 
-    if (totalCalled < minimumNeeded) { return('Round will be thrown. ' + totalCalled + ' called.'); }
+    if (totalCalled < minimumNeeded) { return(`Round will be thrown. ${totalCalled} called.`); }
 
-    if (totalCalled > 14) { return('This will be fun!! ' + totalCalled + ' called.'); }
-    if (totalCalled > 13) { return('Somebody won\'t make it... ' + totalCalled + ' called.'); }
-    if (totalCalled > 12) { return('Going to be a close one. ' + totalCalled + ' called.'); }
+    if (totalCalled > 14) { return(`This will be fun!! ${totalCalled} called.`); }
+    if (totalCalled > 13) { return(`Somebody won\'t make it... ${totalCalled} called.`); }
+    if (totalCalled > 12) { return(`Going to be a close one. ${totalCalled} called.`); }
 
     return ('Game on! (' + totalCalled + ' called)');
   }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { GameScoresComponent } from './game-scores';
 
 
 /*
@@ -289,6 +290,8 @@ export class GamePlayMakesComponent extends Component {
         }
 
         <hr />
+
+      <GameScoresComponent {...this.props}  />
 
       </div>
     );
