@@ -21,18 +21,24 @@ export class GameScoresComponent extends Component {
       case 0:
         return (
           <tr key={round.number}>
-            {round.number} - 
-            <td>
-              <score>{round.scores[0]}</score>
+            <td className="round-number">
+              {round.number}
             </td>
             <td>
-              <score>{round.scores[1]}</score>
+              <call>-</call> | <make>-</make>
+              <score>...</score>
             </td>
             <td>
-              <score>{round.scores[2]}</score>
+              <call>-</call> | <make>-</make>
+              <score>...</score>
             </td>
             <td>
-              <score>{round.scores[3]}</score>
+              <call>-</call> | <make>-</make>
+              <score>...</score>
+            </td>
+            <td>
+              <call>-</call> | <make>-</make>
+              <score>...</score>
             </td>
           </tr>
         );
@@ -40,22 +46,24 @@ export class GameScoresComponent extends Component {
       case 1:
         return (
           <tr key={round.number}>
-            <td>
-              {round.number} -
-              <call>{round.calls[0]}</call> / <make>-</make>
-              <score>{round.scores[0]}</score>
+            <td className="round-number">
+              {round.number}
             </td>
             <td>
-              <call>{round.calls[1]}</call> / <make>-</make>
-              <score>{round.scores[1]}</score>
+              <call>{round.calls[0]}</call> | <make>-</make>
+              <score>...</score>
             </td>
             <td>
-              <call>{round.calls[2]}</call> / <make>-</make>
-              <score>{round.scores[2]}</score>
+              <call>{round.calls[1]}</call> | <make>-</make>
+              <score>...</score>
             </td>
             <td>
-              <call>{round.calls[3]}</call> / <make>-</make>
-              <score>{round.scores[3]}</score>
+              <call>{round.calls[2]}</call> | <make>-</make>
+              <score>...</score>
+            </td>
+            <td>
+              <call>{round.calls[3]}</call> | <make>-</make>
+              <score>...</score>
             </td>
           </tr>
         );
@@ -63,21 +71,23 @@ export class GameScoresComponent extends Component {
       case 2:
         return (
           <tr key={round.number}>
+            <td className="round-number">
+              {round.number}
+            </td>
             <td>
-              {round.number} -
-              <call>{round.calls[0]}</call> / <make>{round.makes[0]}</make>
+              <call>{round.calls[0]}</call> | <make>{round.makes[0]}</make>
               <score>{round.scores[0]}</score>
             </td>
             <td>
-              <call>{round.calls[1]}</call> / <make>{round.makes[1]}</make>
+              <call>{round.calls[1]}</call> | <make>{round.makes[1]}</make>
               <score>{round.scores[1]}</score>
             </td>
             <td>
-              <call>{round.calls[2]}</call> / <make>{round.makes[2]}</make>
+              <call>{round.calls[2]}</call> | <make>{round.makes[2]}</make>
               <score>{round.scores[2]}</score>
             </td>
             <td>
-              <call>{round.calls[3]}</call> / <make>{round.makes[3]}</make>
+              <call>{round.calls[3]}</call> | <make>{round.makes[3]}</make>
               <score>{round.scores[3]}</score>
             </td>
           </tr>
@@ -86,8 +96,11 @@ export class GameScoresComponent extends Component {
       default:
         return(
           <tr key={round.number}>
-            <td>
-              {round.number} - Round Thrown
+            <td className="round-number">
+              {round.number}
+            </td>
+            <td colSpan="4" className="single-row">
+              Round Thrown ({round.status})
             </td>
           </tr>
         );
@@ -104,6 +117,7 @@ export class GameScoresComponent extends Component {
         <table>
           <thead>
             <tr>
+              <td className="round-number">#</td>
               <td>{this.props.data.players[0].name}</td>
               <td>{this.props.data.players[1].name}</td>
               <td>{this.props.data.players[2].name}</td>

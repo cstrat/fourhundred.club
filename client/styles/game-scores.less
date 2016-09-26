@@ -5,18 +5,37 @@ div.game-scores {
     font-size: 0.85rem;
 
     td {
-      width: 25%;
+      width:  24%;
+      padding: 0.5rem 0;
       text-align: center;
+      vertical-align: middle;
+      border-bottom: 1px solid #DDD;
 
       score {
         display: block;
+        margin: 0.5rem 0 0 0;
+        font-weight: bold;
       }
+    }
+
+    td.round-number {
+      width: 4%;
+      color: #666;
+    }
+
+    td.single-row {
+      width: 96%;
+      background: #EEE;
     }
 
     thead td {
       font-weight: bold;
       padding-bottom: 0.5rem;
       text-decoration: underline;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
     }
 
   }
