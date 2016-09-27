@@ -91,7 +91,7 @@ Meteor.methods({
       // Location object
       location:     null,
 
-      // Game status. 0=New,1=Playing,2=Complete,3=Abandoned
+      // Game status. 0=New, 1=Playing, 2=Complete, 3=Abandoned
       status: 0,
 
       // Rules. This will be an array of flags where default rules can be overridden.

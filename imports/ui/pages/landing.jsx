@@ -32,8 +32,8 @@ class Landing extends Component {
           I am still working on the app, right now it only really supports our scoring.
         </p>
         <ul>
-          <li>Calls of 5,6,7,8 will double.</li>
-          <li>Calls of 9,10,11,12 triple.</li>
+          <li>Calls of 5, 6, 7, 8 will double.</li>
+          <li>Calls of 9, 10, 11, 12, 13 triple.</li>
         </ul>
 
         <h2>how can I use this?</h2>
