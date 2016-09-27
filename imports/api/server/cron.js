@@ -1,3 +1,4 @@
+import { Meteor } from 'meteor/meteor';
 import { Games } from '../../api/games';
 import { SyncedCron } from 'meteor/percolate:synced-cron';
 import { Email } from 'meteor/email';
@@ -40,12 +41,6 @@ SyncedCron.add({
           subject:  `fourhundred.club alert: removed ${removedGames} games.`,
           text:     `There are still ${totalGamesRemaining} games on the server.`
         });
-      }else{
-        console.log(
-          '*****************************************',
-          '**    No Admin Email Set In Config    **',
-          '*****************************************'
-        );
       }
     }
   }
