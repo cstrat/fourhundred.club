@@ -50,3 +50,7 @@ SyncedCron.add({
     }
   }
 });
+
+
+// Start SyncedCron!
+SyncedCron.start();
