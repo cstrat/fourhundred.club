@@ -1,5 +1,4 @@
 node_modules/
 .DS_Store
-_build/
 settings.json
 env.json

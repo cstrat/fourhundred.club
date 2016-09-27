@@ -8,13 +8,18 @@ Once I get the app up and running completely, I will post a proper `readme` here
 
 # Current Activities
 
-- [ ] build the ui to show a runsheet of the game scores
+- [x] build the ui to show a runsheet of the game scores
 - [ ] refactor the call & make/results jsx files into one
+- [ ] include toggles to allow for alternate game rules to be played
 - [ ] build a dedicated ui to spectate (for other players to load on their device)
 - [ ] build some output stats post-match, just general interest stuff
 - [ ] build a way to email those stats to players
 - [ ] setup an account system to let players login and keep their games together
+- [ ] update the cron to only delete games setup by unregistered users
+
 
 # Warnings
 
-Please note that until specifically stated - don't assume your games will stay online.
+Please note that while in development, don't expect games to stay around.
+It is possible that the database will need to be flushed.
+Right now all games which are abandoned will be deleted automatically.
