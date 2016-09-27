@@ -7,6 +7,6 @@ import React, { Component } from 'react';
 
 export const GameLoadingComponent = () => (
   <div className="game-loading">
-    Loading Data, Please Wait.
+    <h2>Loading Data, Please Wait.</h2>
   </div>
 );

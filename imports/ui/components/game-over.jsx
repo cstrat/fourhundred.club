@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { GameScoresComponent } from '../components/game-scores';
 
 /*
   [Game Over Component]
@@ -6,8 +7,19 @@ import React, { Component } from 'react';
     Should show a message about how free games are automatically wiped after x days.
 */
 
-export const GameOverComponent = () => (
-  <div className="game-over">
-    Game over, this page will show scores and stats.
-  </div>
-);
+export class GameOverComponent extends Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return(
+      <div className="game-over">
+        <h2>Game Over &mdash; Scoresheet Below</h2>
+
+        <GameScoresComponent {...this.props}  />
+      </div>
+    );
+  }
+}
