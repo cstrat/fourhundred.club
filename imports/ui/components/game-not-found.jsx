@@ -8,6 +8,6 @@ import React, { Component } from 'react';
 
 export const GameNotFoundComponent = () => (
   <div className="game-not-found">
-    Game Data Not Found!
+    <h2 className="error">Game Data Not Found!</h2>
   </div>
 );

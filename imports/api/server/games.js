@@ -140,5 +140,5 @@ DDPRateLimiter.addRule(
     name: 'app.games.create'
   },
   5,
-  1000*60*2
+  10000*60*2
 );
