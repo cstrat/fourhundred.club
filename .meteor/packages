@@ -29,3 +29,4 @@ fastclick
 percolate:synced-cron
 meteorhacks:kadira
 email
+ddp-rate-limiter

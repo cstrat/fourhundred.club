@@ -1,0 +1,193 @@
+.game-new,
+.game-ready {
+  ul {
+    margin: 0.5rem 0;
+
+    li {
+      padding: 0.25rem 0;
+    }
+
+    li.instruction {
+      font-weight: bold;
+    }
+  }
+}
+
+.game-play {
+  ul {
+    margin: 0.5rem 0;
+
+    li {
+      margin: 0 0.5%;
+      padding: 0.25rem 0 0.5rem 0;
+      display: inline-block;
+      width: 24%;
+      text-align: center;
+      font-size: 0.9rem;
+      border-radius: 10px;
+
+      vertical-align: top;
+
+      name,
+      score,
+      call,
+      make {
+        display: block;
+        margin: 0.2rem 0;
+      }
+
+      name {
+        font-weight: bold;
+      }
+
+      make {
+        padding-bottom: 0.25rem;
+      }
+
+      make.made {
+        background: #CFC;
+        border-radius: 10px;
+      }
+
+      make.miss {
+        background: #EEE;
+        border-radius: 10px;
+      }
+
+      score {
+        font-size: 1.1rem;
+      }
+
+      score::before,
+      call::before,
+      make::before {
+        padding: 0.25rem 0;
+
+        display: block;
+        font-size: 0.65rem;
+        color: #555;
+      }
+
+      score::before { content: 'SCORE'; }
+      call::before { content: 'CALL'; }
+      make::before { content: 'CALL | MADE'; }
+
+    }
+
+    li.dealer::after {
+      margin: 0.2rem 0 0 0;
+      padding: 0.2rem 0.4rem;
+
+      display: inline-block;
+      background: #666;
+      color: #FFF;
+      font-size: 0.8rem;
+      border-radius: 5px;
+
+      content: 'dealer';
+    }
+
+    li.selected {
+      background: #FFFC7F;
+    }
+
+  }
+}
+
+ul.keypad {
+  li {
+    display: block;
+    width: 100%;
+
+    button {
+      border: 1px solid #555;
+      border-left: none;
+      background: #EEE;
+    }
+
+    button:first-child {
+      border-left: 1px solid #555;
+    }
+
+    button.selected {
+      background: #999;
+    }
+
+    button:disabled {
+      background: #FEE;
+      text-decoration: line-through;
+    }
+  }
+
+  li.special-row {
+    padding-top: 1rem;
+    text-align: left;
+
+    button {
+      width: 30%;
+    }
+  }
+
+}
+
+ul.keypad-calls {
+  li.top-row button {
+    padding: 1.6rem 0;
+    width: 33.3%;
+  }
+  li.middle-row button {
+    padding: 1.3rem;
+    width: 25%;
+  }
+  li.bottom-row button {
+    padding: 1rem;
+    width: 20%;
+  }
+}
+
+ul.keypad-makes {
+  li.top-row button {
+    padding: 1.6rem 0;
+    width: 25%;
+  }
+  li.middle-row button {
+    padding: 1.3rem;
+    width: 20%;
+  }
+  li.bottom-row button {
+    padding: 1rem;
+    width: 20%;
+  }
+}
+
+div.action-bar:disabled {
+  pointer-events: none;
+}
+
+div.action-bar {
+  text-align: center;
+
+  h2 {
+    margin-bottom: 1rem;
+  }
+
+  button {
+    margin: 0 0.5rem;
+  }
+
+  button:disabled {
+    text-decoration: line-through;
+    background: #FEE;
+  }
+
+  button.throw {
+    border: 1px solid #900;
+    color: #900;
+  }
+
+  button.throw.selected {
+    box-shadow: 0 0 5px #900;
+    background: #CCC;
+  }
+
+}

@@ -2,10 +2,10 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 import { Games } from '../games';
-
+import { DDPRateLimiter } from 'meteor/ddp-rate-limiter';
 
 /*
-  Publish Game Database
+  [Publish Database]
 */
 
 Meteor.publish('games', function({ scoreCode, watchCode }) {
@@ -32,7 +32,7 @@ Meteor.publish('games', function({ scoreCode, watchCode }) {
 
 
 /*
-  Define Game Helpers (private)
+  [Helpers] (private)
 */
 
 Games.helpers({
@@ -41,17 +41,18 @@ Games.helpers({
 
 
 /*
-  Game Methods (private)
+  [Methods] (private)
+
 */
 
 Meteor.methods({
   'app.games.create'(input) {
 
     // Sanitise the player names
-    const player1 = input.players[0].replace(/\W/g, '');
-    const player2 = input.players[1].replace(/\W/g, '');
-    const player3 = input.players[2].replace(/\W/g, '');
-    const player4 = input.players[3].replace(/\W/g, '');
+    const player1 = input.players[0].replace(/\W/g, '').substring(0, 12);
+    const player2 = input.players[1].replace(/\W/g, '').substring(0, 12);
+    const player3 = input.players[2].replace(/\W/g, '').substring(0, 12);
+    const player4 = input.players[3].replace(/\W/g, '').substring(0, 12);
 
     // Set the random score and watch codes
     const scoreCode = Random.id(10);
@@ -126,3 +127,18 @@ Meteor.methods({
 
   }
 });
+
+
+/*
+  [Rate Limit]
+    Apply a rate limit to new games being setup. 5 allowed per 2 minute interval.
+*/
+
+DDPRateLimiter.addRule(
+  {
+    type: 'method',
+    name: 'app.games.create'
+  },
+  5,
+  1000*60*2
+);
