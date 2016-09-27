@@ -74,19 +74,19 @@ export class GameScoresComponent extends Component {
             <td className="round-number">
               {round.number}
             </td>
-            <td>
+            <td className={(round.calls[0] <= round.makes[0]) ? 'made' : 'miss'}>
               <call>{round.calls[0]}</call> | <make>{round.makes[0]}</make>
               <score>{round.scores[0]}</score>
             </td>
-            <td>
+            <td className={(round.calls[1] <= round.makes[1]) ? 'made' : 'miss'}>
               <call>{round.calls[1]}</call> | <make>{round.makes[1]}</make>
               <score>{round.scores[1]}</score>
             </td>
-            <td>
+            <td className={(round.calls[2] <= round.makes[2]) ? 'made' : 'miss'}>
               <call>{round.calls[2]}</call> | <make>{round.makes[2]}</make>
               <score>{round.scores[2]}</score>
             </td>
-            <td>
+            <td className={(round.calls[3] <= round.makes[3]) ? 'made' : 'miss'}>
               <call>{round.calls[3]}</call> | <make>{round.makes[3]}</make>
               <score>{round.scores[3]}</score>
             </td>
