@@ -7,7 +7,7 @@ import moment from 'moment';
 /*
   [Purge Abandoned Games]
     Get the timed services running, to automatically flush the database.
-    Every 6 hours, deletes games older than 6 hours which haven't finished.
+    Every 6 hours, deletes games older than 18 hours which haven't finished.
     Emails a report to the contact setup in the
 */
 
@@ -23,7 +23,7 @@ SyncedCron.add({
     let removedGames = Games.remove(
       {
         'dates.created': {
-          $lt: new moment().subtract(6, 'h').toDate()
+          $lt: new moment().subtract(18, 'h').toDate()
         },
         'status': {
           $ne: 2

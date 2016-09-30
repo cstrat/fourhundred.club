@@ -1,8 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
+import { Email } from 'meteor/email';
 import { Games } from '../games';
+import { throwError } from '../_errors.js';
 import { DDPRateLimiter } from 'meteor/ddp-rate-limiter';
+
 
 /*
   [Publish Database]
@@ -54,6 +57,13 @@ Meteor.methods({
     const player3 = input.players[2].replace(/\W/g, '').substring(0, 12);
     const player4 = input.players[3].replace(/\W/g, '').substring(0, 12);
 
+    // Just check the email address
+    if (input.email) {
+      if (!/\S+@\S+\.\S+/.test(input.email)) {
+        throwError('invalid-email', 'Invalid Email Address Provided!');
+      }
+    }
+
     // Set the random score and watch codes
     const scoreCode = Random.id(10);
     const watchCode = Random.id(10);
@@ -64,7 +74,8 @@ Meteor.methods({
       // Private data which is never sent to client, can be queried via methods though
       _private: {
         version:    0,
-        public:     false
+        public:     false,
+        email:      input.email
       },
 
       // Access codes to score and watch the games
@@ -91,7 +102,7 @@ Meteor.methods({
       // Location object
       location:     null,
 
-      // Game status. 0=New, 1=Playing, 2=Complete, 3=Abandoned
+      // Game status. 0=New, 1=Playing, 2=Complete, 3=Abandoned, 4=ForceAbandon
       status: 0,
 
       // Rules. This will be an array of flags where default rules can be overridden.
@@ -122,6 +133,43 @@ Meteor.methods({
 
     });
 
+    // Send the user an email if they have provided their email address to us
+    if (input.email) {
+      Email.send({
+        to:       input.email,
+        from:     'newgame@fourhundred.club',
+        subject:  `New Game @ Fourhundred.club`,
+        text:
+`
+Hi ${player1 || 'Player 1'},
+A new game has been setup for you at fourhundred.club.
+
+Please remember that the game will delete itself if you
+don't complete it within 18 hours. There is no guarantee
+that the games will be kept for any long period of time.
+
+
+The URL to score this game is:
+  http://fourhundred.club/score/${scoreCode}/
+** You should not share this URL **
+
+
+The URL to spectate the game is: (you can share this code)
+  http://fourhundred.club/watch/${watchCode}/
+^^ Your teammates should load this URL ^^
+
+
+Thanks,
+Fourhundred.Club
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+If you didn't setup a game, then someone else has used your
+email address when creating a game.
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+`
+      });
+    }
+
     // Return the scoreCode for the person to continue with the game
     return scoreCode;
 
@@ -131,7 +179,11 @@ Meteor.methods({
 
 /*
   [Rate Limit]
-    Apply a rate limit to new games being setup. 5 allowed per 2 minute interval.
+    games.create: 5 allowed per 2 minute interval.
+    games.dealer: 5 allowed per 2 minute interval.
+    games.calls:  5 allowed per 30 second interval.
+    games.makes:  5 allowed per 30 second interval.
+    games.throw:  5 allowed per 30 second interval.
 */
 
 DDPRateLimiter.addRule(
@@ -141,4 +193,40 @@ DDPRateLimiter.addRule(
   },
   5,
   10000*60*2
+);
+
+DDPRateLimiter.addRule(
+  {
+    type: 'method',
+    name: 'app.games.dealer'
+  },
+  5,
+  10000*60*2
+);
+
+DDPRateLimiter.addRule(
+  {
+    type: 'method',
+    name: 'app.games.calls'
+  },
+  5,
+  10000*30
+);
+
+DDPRateLimiter.addRule(
+  {
+    type: 'method',
+    name: 'app.games.makes'
+  },
+  5,
+  10000*30
+);
+
+DDPRateLimiter.addRule(
+  {
+    type: 'method',
+    name: 'app.games.throw'
+  },
+  5,
+  10000*30
 );

@@ -24,6 +24,22 @@ Games.helpers({
     var dealerPos   = dealer;
     var scoreData   = [0,0,0,0];
 
+    // Check to see if game has too many rounds, extreme example, 250 rounds.
+    if (this.currentRound() && this.currentRound().number >= 250) {
+      // Shut the game down... status 4 = forced abandon
+      Games.update(
+        this._id,
+        {
+          $set: {
+            'dates.finished': new Date(),
+            status:           4
+          }
+        }
+      );
+
+      return false;
+    }
+
     // If nothing input to this helper, then need to load the last round data
     if (typeof dealer == 'undefined') {
       var lastRoundDealer = this.currentRound().dealer;
@@ -53,7 +69,7 @@ Games.helpers({
           status: 1
         },
         $push: {
-          // Inject the first data
+          // Inject the round data
           rounds: roundData
         }
       }
@@ -197,13 +213,20 @@ Meteor.methods({
       check(input.dealer, Number);
     }
 
-    let setupGameResult = Games.findOne({ '_access.score': input.scoreCode }).setupRound(input.dealer);
+    // Only let you set the dealer if the game status is 0.
+    let setupGameResult = Games.findOne(
+      {
+        '_access.score':  input.scoreCode,
+        'status':         0
+      }
+    ).setupRound(input.dealer);
 
     if (!setupGameResult) {
       // Fatal error on setup
     }
 
   },
+
 
   'app.games.calls': function(input) {
 
@@ -212,7 +235,12 @@ Meteor.methods({
       check(input.calls, [Number]);
     }
 
-    let saveCallsResult = Games.findOne({ '_access.score': input.scoreCode }).saveCalls(input.calls);
+    let saveCallsResult = Games.findOne(
+      {
+        '_access.score':  input.scoreCode,
+        'status':         1
+      }
+    ).saveCalls(input.calls);
 
     // If calls were low, new game needs to be started
     if (saveCallsResult == 4) {
@@ -240,7 +268,12 @@ Meteor.methods({
       check(input.makes, [Number]);
     }
 
-    let saveMakesResult = Games.findOne({ '_access.score': input.scoreCode }).saveMakes(input.makes);
+    let saveMakesResult = Games.findOne(
+      {
+        '_access.score':  input.scoreCode,
+        'status':         1
+      }
+    ).saveMakes(input.makes);
 
     if (!saveMakesResult) {
       // Fatal error on saving makes
@@ -288,7 +321,12 @@ Meteor.methods({
       check(input.round, Number);
     }
 
-    let saveThrow = Games.findOne({ '_access.score': input.scoreCode }).throwRound(input.round);
+    let saveThrow = Games.findOne(
+      {
+        '_access.score':  input.scoreCode,
+        'status':         1
+      }
+    ).throwRound(input.round);
 
     if (!saveThrow) {
       // Fatal error on setup
