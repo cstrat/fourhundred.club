@@ -57,9 +57,9 @@ Meteor.methods({
     const player3 = input.players[2].replace(/\W/g, '').substring(0, 12);
     const player4 = input.players[3].replace(/\W/g, '').substring(0, 12);
 
-    // Just check the email address
+    // Simple check of the email, should stop any sort of abuse
     if (input.email) {
-      if (!/\S+@\S+\.\S+/.test(input.email)) {
+      if (!/^\S+@\S+\.\S+$/.test(input.email)) {
         throwError('invalid-email', 'Invalid Email Address Provided!');
       }
     }
@@ -137,7 +137,7 @@ Meteor.methods({
     if (input.email) {
       Email.send({
         to:       input.email,
-        from:     'newgame@fourhundred.club',
+        from:     'Fourhundred.club Notification <notifications@fourhundred.club>',
         subject:  `New Game @ Fourhundred.club`,
         text:
 `
@@ -151,21 +151,21 @@ that the games will be kept for any long period of time.
 
 The URL to score this game is:
   http://fourhundred.club/score/${scoreCode}/
-** You should not share this URL **
+** Do not share this URL **
 
 
 The URL to spectate the game is: (you can share this code)
   http://fourhundred.club/watch/${watchCode}/
-^^ Your teammates should load this URL ^^
+^^ You should share this with the other players ^^
 
 
 Thanks,
 Fourhundred.Club
 
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-If you didn't setup a game, then someone else has used your
-email address when creating a game.
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+-----------------------------------------------------------
+     If you didn't setup a game, then someone else has
+       used your email address when creating a game.
+-----------------------------------------------------------
 `
       });
     }
