@@ -42,6 +42,11 @@ export class GameReadyComponent extends Component {
     return (
       <div className="game-ready">
         <h2>Setup New Game</h2>
+
+        <p>
+          Your game is almost ready to start, other players can load this URL to follow the scoreboard: <a href={'http://fourhundred.club/watch/' + this.props.data._access.watch}>http://fourhundred.club/watch/{this.props.data._access.watch}</a>
+        </p>
+
         <ul>
           <li className="instruction">Choose Starting Dealer</li>
           <li><select ref="dealer">
