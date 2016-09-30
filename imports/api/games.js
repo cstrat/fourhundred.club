@@ -25,8 +25,8 @@ Games.helpers({
     var scoreData   = [0,0,0,0];
 
     // Check to see if game has too many rounds, extreme example, 250 rounds.
-    if (this.currentRound().number >= 250) {
-      // Shut the game down...
+    if (this.currentRound() && this.currentRound().number >= 250) {
+      // Shut the game down... status 4 = forced abandon
       Games.update(
         this._id,
         {

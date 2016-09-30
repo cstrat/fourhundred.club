@@ -25,6 +25,7 @@ export class GameNewComponent extends Component {
     this.refs.p2.disabled = true;
     this.refs.p3.disabled = true;
     this.refs.p4.disabled = true;
+    this.refs.email.disabled = true;
     this.refs.submit.disabled = true;
 
     Meteor.call(
@@ -35,7 +36,8 @@ export class GameNewComponent extends Component {
           this.refs.p2.value,
           this.refs.p3.value,
           this.refs.p4.value
-        ]
+        ],
+        email: this.refs.email.value
       },
       this.createGame_return
     );
@@ -46,6 +48,7 @@ export class GameNewComponent extends Component {
     this.refs.p2.disabled = false;
     this.refs.p3.disabled = false;
     this.refs.p4.disabled = false;
+    this.refs.email.disabled = false;
     this.refs.submit.disabled = false;
 
     if (error) {
@@ -65,8 +68,17 @@ export class GameNewComponent extends Component {
           If you play clockwise: Player 1 should be you (person keeping score), Player 2 would be the person on your left, Player 3 would be opposite you (your teammate), and finally Player 4 would be to your right.
         </p>
 
+        <p>
+          You don't need to enter your email address, if you do, we will send you the details of this game to your inbox.
+          This way you can revisit the scoresheet afterwards (if you lose the URL).
+          We will also send you a link for the spectator view.
+        </p>
+
         <form onSubmit={this.createGame}>
           <ul>
+            <li className="instruction">Your Email Address (not required)</li>
+            <li><input type="text" ref="email" placeholder="joe@blogs.com" /></li>
+
             <li className="instruction">Choose Player Names</li>
             <li><input type="text" ref="p1" placeholder="Player 1" /></li>
             <li><input type="text" ref="p2" placeholder="Player 2" /></li>
