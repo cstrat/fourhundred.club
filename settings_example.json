@@ -1,0 +1,13 @@
+{
+  "config": {
+    "adminEmail": "x@y.c"
+  },
+
+  "kadira": {
+    "appId": "x",
+    "appSecret": "y",
+    "debug": {
+      "authKey": "z"
+    }
+  }
+}

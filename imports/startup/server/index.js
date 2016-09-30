@@ -17,8 +17,18 @@ console.log(
 ****************************************
 **      FOURHUNDRED.CLUB STARTED      **
 ****************************************
+`);
 
- Alert: ${Meteor.settings.config.adminEmail}
 
+// Add comment to alert if settings not correclty loaded
+if (Meteor.settings.config.adminEmail) {
+  console.log(`Alert: ${Meteor.settings.config.adminEmail}`);
+}else{
+  console.log(`* Missing Settings: config.adminEmail  *`);
+}
+
+
+console.log(
+`
 ****************************************
 `);

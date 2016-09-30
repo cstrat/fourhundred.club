@@ -91,7 +91,7 @@ Meteor.methods({
       // Location object
       location:     null,
 
-      // Game status. 0=New, 1=Playing, 2=Complete, 3=Abandoned
+      // Game status. 0=New, 1=Playing, 2=Complete, 3=Abandoned, 4=ForceAbandon
       status: 0,
 
       // Rules. This will be an array of flags where default rules can be overridden.
@@ -131,7 +131,11 @@ Meteor.methods({
 
 /*
   [Rate Limit]
-    Apply a rate limit to new games being setup. 5 allowed per 2 minute interval.
+    games.create: 5 allowed per 2 minute interval.
+    games.dealer: 5 allowed per 2 minute interval.
+    games.calls:  5 allowed per 30 second interval.
+    games.makes:  5 allowed per 30 second interval.
+    games.throw:  5 allowed per 30 second interval.
 */
 
 DDPRateLimiter.addRule(
@@ -141,4 +145,40 @@ DDPRateLimiter.addRule(
   },
   5,
   10000*60*2
+);
+
+DDPRateLimiter.addRule(
+  {
+    type: 'method',
+    name: 'app.games.dealer'
+  },
+  5,
+  10000*60*2
+);
+
+DDPRateLimiter.addRule(
+  {
+    type: 'method',
+    name: 'app.games.calls'
+  },
+  5,
+  10000*30
+);
+
+DDPRateLimiter.addRule(
+  {
+    type: 'method',
+    name: 'app.games.makes'
+  },
+  5,
+  10000*30
+);
+
+DDPRateLimiter.addRule(
+  {
+    type: 'method',
+    name: 'app.games.throw'
+  },
+  5,
+  10000*30
 );
