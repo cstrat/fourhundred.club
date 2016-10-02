@@ -245,8 +245,8 @@ export class GamePlayComponent extends Component {
     if (error) {
       alert(error.reason);
 
-    }else if (result == 4) {
-      // This means the round was likely thrown. Need to reset the data
+    }else{
+      // Round completed, no error
       this.resetState();
     }
   }
@@ -372,22 +372,22 @@ export class GamePlayComponent extends Component {
           <li className={this.nameClass(0)}>
             <name>{this.props.data.players[0].name}</name>
             <score>{this.props.data.currentRound().scores[0]}</score>
-            <make className={this.makeClass(0)}>{this.props.data.currentRound().calls[0]} | {(this.state.makes[0] === null) ? '-' : this.state.makes[0]}</make>
+            <make className={this.makeClass(0)}>{(this.state.calls[0] === null) ? '-' : this.state.calls[0]} | {(this.state.makes[0] === null) ? '-' : this.state.makes[0]}</make>
           </li>
           <li className={this.nameClass(1)}>
             <name>{this.props.data.players[1].name}</name>
             <score>{this.props.data.currentRound().scores[1]}</score>
-            <make className={this.makeClass(1)}>{this.props.data.currentRound().calls[1]} | {(this.state.makes[1] === null) ? '-' : this.state.makes[1]}</make>
+            <make className={this.makeClass(1)}>{(this.state.calls[1] === null) ? '-' : this.state.calls[1]} | {(this.state.makes[1] === null) ? '-' : this.state.makes[1]}</make>
           </li>
           <li className={this.nameClass(2)}>
             <name>{this.props.data.players[2].name}</name>
             <score>{this.props.data.currentRound().scores[2]}</score>
-            <make className={this.makeClass(2)}>{this.props.data.currentRound().calls[2]} | {(this.state.makes[2] === null) ? '-' : this.state.makes[2]}</make>
+            <make className={this.makeClass(2)}>{(this.state.calls[2] === null) ? '-' : this.state.calls[2]} | {(this.state.makes[2] === null) ? '-' : this.state.makes[2]}</make>
           </li>
           <li className={this.nameClass(3)}>
             <name>{this.props.data.players[3].name}</name>
             <score>{this.props.data.currentRound().scores[3]}</score>
-            <make className={this.makeClass(3)}>{this.props.data.currentRound().calls[3]} | {(this.state.makes[3] === null) ? '-' : this.state.makes[3]}</make>
+            <make className={this.makeClass(3)}>{(this.state.calls[3] === null) ? '-' : this.state.calls[3]} | {(this.state.makes[3] === null) ? '-' : this.state.makes[3]}</make>
           </li>
         </ul>
 
@@ -430,9 +430,15 @@ export class GamePlayComponent extends Component {
   returnCallKeypad() {
 
     var self = this;
+    var keypadNote = 'HELLO';
+    var keypadCount = 55;
 
     return(
       <ul className="keypad keypad-calls">
+        <li className="note">
+          {keypadCount}
+          {keypadNote}
+        </li>
         <li className="top-row">
           <button disabled={this.keypadDisable(2)} className={this.keypadSelected(2)} onClick={()=>self.keypadEnter(2)}>2</button>
           <button disabled={this.keypadDisable(3)} className={this.keypadSelected(3)} onClick={()=>self.keypadEnter(3)}>3</button>
@@ -451,7 +457,7 @@ export class GamePlayComponent extends Component {
           <button className={this.keypadSelected(12)} onClick={()=>self.keypadEnter(12)}>12</button>
           <button className={this.keypadSelected(13)} onClick={()=>self.keypadEnter(13)}>13</button>
         </li>
-        <li className="special-row">
+        <li className="special-action">
           <button onClick={this.keypadToggle}>Cancel Entry</button>
         </li>
       </ul>
@@ -462,9 +468,15 @@ export class GamePlayComponent extends Component {
   returnMakeKeypad() {
 
     var self = this;
+    var keypadNote = 'HELLO';
+    var keypadCount = 55;
 
     return(
       <ul className="keypad keypad-makes">
+        <li className="note">
+          {keypadCount}
+          {keypadNote}
+        </li>
         <li className="top-row">
           <button className={this.keypadSelected(0)} onClick={()=>self.keypadEnter(0)}>0</button>
           <button disabled={this.keypadDisable(1)} className={this.keypadSelected(1)} onClick={()=>self.keypadEnter(1)}>1</button>
@@ -485,7 +497,7 @@ export class GamePlayComponent extends Component {
           <button disabled={this.keypadDisable(12)} className={this.keypadSelected(12)} onClick={()=>self.keypadEnter(12)}>12</button>
           <button disabled={this.keypadDisable(13)} className={this.keypadSelected(13)} onClick={()=>self.keypadEnter(13)}>13</button>
         </li>
-        <li className="special-row">
+        <li className="special-action">
           <button onClick={this.keypadToggle}>Cancel Entry</button>
         </li>
       </ul>
