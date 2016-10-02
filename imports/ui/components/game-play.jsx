@@ -430,14 +430,14 @@ export class GamePlayComponent extends Component {
   returnCallKeypad() {
 
     var self = this;
-    var keypadNote = 'HELLO';
-    var keypadCount = 55;
+    var keypadNote = 'Call for ' + this.props.data.players[this.state.keypad_player].name;
+    var keypadCount = ' [Called: ' + (+this.state.keypad_confirm + this.state.calls.reduce(function(a, b) { return a + b; })) + '/' + this.props.data.minimumCall() + ']';
 
     return(
       <ul className="keypad keypad-calls">
         <li className="note">
-          {keypadCount}
           {keypadNote}
+          {keypadCount}
         </li>
         <li className="top-row">
           <button disabled={this.keypadDisable(2)} className={this.keypadSelected(2)} onClick={()=>self.keypadEnter(2)}>2</button>
@@ -468,14 +468,14 @@ export class GamePlayComponent extends Component {
   returnMakeKeypad() {
 
     var self = this;
-    var keypadNote = 'HELLO';
-    var keypadCount = 55;
+    var keypadNote = 'Result for ' + this.props.data.players[this.state.keypad_player].name + ' (Called ' + this.props.data.currentRound().calls[this.state.keypad_player] + ')';
+    var keypadCount = ' [' + (+this.state.keypad_confirm + this.state.calls.reduce(function(a, b) { return a + b; })) + '/13]';
 
     return(
       <ul className="keypad keypad-makes">
         <li className="note">
-          {keypadCount}
           {keypadNote}
+          {keypadCount}
         </li>
         <li className="top-row">
           <button className={this.keypadSelected(0)} onClick={()=>self.keypadEnter(0)}>0</button>

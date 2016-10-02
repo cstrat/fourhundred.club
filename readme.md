@@ -12,7 +12,7 @@ Once I get the app up and running completely, I will post a proper `readme` here
 
 - [x] build the ui to show a runsheet of the game scores
 - [x] include email notification for starting a game
-- [ ] refactor the call & make/results jsx files into one
+- [x] refactor the call & make/results jsx files into one
 - [ ] include toggles to allow for alternate scoring rules to be played
 - [x] build a dedicated ui to spectate (for other players to load on their device)
 - [ ] build the functionality to report on game stats at the end (who called the highest etc...)
