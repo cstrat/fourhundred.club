@@ -187,7 +187,7 @@ export class GamePlayComponent extends Component {
   saveCalls(e) {
     e.preventDefault();
 
-    this.setState({data_loading: true});
+    this.setState({ data_loading: true });
 
     Meteor.call(
       'app.games.calls',
@@ -206,7 +206,7 @@ export class GamePlayComponent extends Component {
       Return function for the save calls method call.
   */
   saveCalls_return(error, result) {
-    this.setState({data_loading: false});
+    this.setState({ data_loading: false });
 
     if (error) {
       alert(error.reason);
@@ -236,6 +236,8 @@ export class GamePlayComponent extends Component {
   saveMakes(e) {
     e.preventDefault();
 
+    this.setState({ data_loading: true });
+
     Meteor.call(
       'app.games.makes',
       {
@@ -253,7 +255,7 @@ export class GamePlayComponent extends Component {
       Return function for the save makes method call.
   */
   saveMakes_return(error, result) {
-    this.setState({data_loading: false});
+    this.setState({ data_loading: false });
 
     if (error) {
       alert(error.reason);
@@ -409,17 +411,20 @@ export class GamePlayComponent extends Component {
 
         <hr />
 
-        {(!this.state.keypad)?
+        {(!this.state.keypad)
+        ? // Show the action-bar
+
           <div className="action-bar">
             <h2>{this.statusNote()}</h2>
 
-            {(this.props.data.currentRound().status==0)?
+            {(this.props.data.currentRound().status==0)
+            ? // Show the action bar for making a call
               <div>
                 { (this.saveCallsDisabled()) ? <button disabled={this.disableActionBar()} ref="throw" className={this.throwRound_selected()} onClick={this.throwRound}>Throw Round</button> : null }
                 <button disabled={this.disableActionBar()} ref="enter" onClick={this.keypadToggle}>{ (this.saveCallsDisabled()) ? 'Enter Calls →' : 'Re-enter Calls' } </button>
                 { (this.saveCallsDisabled()) ? null : <button disabled={this.disableActionBar()} ref="save" onClick={this.saveCalls}>Save Calls &rarr;</button> }
               </div>
-            :
+            : // Show the action bar for saving the results
               <div>
                 { (this.saveMakesDisabled()) ? <button disabled={this.disableActionBar()} ref="throw" className={this.throwRound_selected()} onClick={this.throwRound}>Throw Round</button> : null }
                 <button disabled={this.disableActionBar()} ref="enter" onClick={this.keypadToggle}>{ (this.saveMakesDisabled()) ? 'Enter Results →' : 'Re-enter Results' } </button>
@@ -428,7 +433,8 @@ export class GamePlayComponent extends Component {
             }
 
           </div>
-        :
+
+        : // Show the correct keypad
           <div>
             {(this.props.data.currentRound().status==0)? this.returnCallKeypad() : this.returnMakeKeypad() }
           </div>
