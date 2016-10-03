@@ -32,6 +32,7 @@ export class GamePlayComponent extends Component {
     this.keypadDisable        = this.keypadDisable.bind(this);
     this.keypadSelected       = this.keypadSelected.bind(this);
 
+    this.returnPlayerScore    = this.returnPlayerScore.bind(this);
     this.returnCallKeypad     = this.returnCallKeypad.bind(this);
     this.returnMakeKeypad     = this.returnMakeKeypad.bind(this);
 
@@ -50,6 +51,7 @@ export class GamePlayComponent extends Component {
     this.throwRound           = this.throwRound.bind(this);
     this.throwRound_return    = this.throwRound_return.bind(this);
     this.throwRound_selected  = this.throwRound_selected.bind(this);
+    this.throwRound_timeout   = this.throwRound_timeout.bind(this);
 
     this.disableActionBar     = this.disableActionBar.bind(this);
   }
@@ -159,11 +161,21 @@ export class GamePlayComponent extends Component {
     Returns the attribute value for whether the buttons on the keypad are disabled or not
   */
   keypadDisable(int) {
-    // If users score is >= 40 min call is 4, >=30 min call is 3
-    var playerScore = this.props.data.currentRound().scores[this.state.keypad_player];
-    if ((playerScore >= 40) && (int == 2 || int == 3)) { return true; }
-    if ((playerScore >= 30) && int == 2) { return true; }
-    return false;
+    // When making calls
+    if (this.props.data.currentRound().status == 0) {
+      // If users score is >= 40 min call is 4, >=30 min call is 3
+      var playerScore = this.props.data.currentRound().scores[this.state.keypad_player];
+      if ((playerScore >= 40) && (int == 2 || int == 3)) { return true; }
+      if ((playerScore >= 30) && int == 2) { return true; }
+      return false;
+    }
+
+    // When saving results
+    if (this.props.data.currentRound().status == 1) {
+      if ((this.state.makes.reduce(function(a, b) { return a + b; }) + int) > 13) {
+        return true;
+      }
+    }
   }
 
 
@@ -235,6 +247,7 @@ export class GamePlayComponent extends Component {
   }
 
 
+
   /*
     [saveMakes_return]
       Return function for the save makes method call.
@@ -264,7 +277,12 @@ export class GamePlayComponent extends Component {
   throwRound() {
     if (this.state.throw_selected) {
 
-      this.setState({data_loading: true});
+      this.setState(
+        {
+          throw_selected: false,
+          data_loading:   true
+        }
+      );
 
       Meteor.call(
         'app.games.throw',
@@ -281,7 +299,22 @@ export class GamePlayComponent extends Component {
           throw_selected: true
         }
       );
+      setTimeout(this.throwRound_timeout, 1500);
     }
+  }
+
+
+
+  /*
+    [throwRound_timeout]
+      After 1.5 seconds de-select the throw-round button.
+  */
+  throwRound_timeout() {
+    this.setState(
+      {
+        throw_selected: false
+      }
+    );
   }
 
 
@@ -301,6 +334,15 @@ export class GamePlayComponent extends Component {
   }
 
 
+  /*
+    [throwRound_selected]
+      Returns the classname for the throw round buttons
+  */
+  throwRound_selected() {
+    return (this.state.throw_selected) ? 'throw selected' : 'throw';
+  }
+
+
   nameClass(position) {
     var className = (position == this.props.data.currentRound().dealer) ? 'dealer ' : '';
 
@@ -317,16 +359,6 @@ export class GamePlayComponent extends Component {
 
     return className;
   }
-
-
-  /*
-    [throwRound_selected]
-      Returns the classname for the throw round buttons
-  */
-  throwRound_selected() {
-    return (this.state.throw_selected) ? 'throw selected' : 'throw';
-  }
-
 
 
   /*
@@ -369,26 +401,10 @@ export class GamePlayComponent extends Component {
     return (
       <div className="game-play">
         <ul>
-          <li className={this.nameClass(0)}>
-            <name>{this.props.data.players[0].name}</name>
-            <score>{this.props.data.currentRound().scores[0]}</score>
-            <make className={this.makeClass(0)}>{(this.state.calls[0] === null) ? '-' : this.state.calls[0]} | {(this.state.makes[0] === null) ? '-' : this.state.makes[0]}</make>
-          </li>
-          <li className={this.nameClass(1)}>
-            <name>{this.props.data.players[1].name}</name>
-            <score>{this.props.data.currentRound().scores[1]}</score>
-            <make className={this.makeClass(1)}>{(this.state.calls[1] === null) ? '-' : this.state.calls[1]} | {(this.state.makes[1] === null) ? '-' : this.state.makes[1]}</make>
-          </li>
-          <li className={this.nameClass(2)}>
-            <name>{this.props.data.players[2].name}</name>
-            <score>{this.props.data.currentRound().scores[2]}</score>
-            <make className={this.makeClass(2)}>{(this.state.calls[2] === null) ? '-' : this.state.calls[2]} | {(this.state.makes[2] === null) ? '-' : this.state.makes[2]}</make>
-          </li>
-          <li className={this.nameClass(3)}>
-            <name>{this.props.data.players[3].name}</name>
-            <score>{this.props.data.currentRound().scores[3]}</score>
-            <make className={this.makeClass(3)}>{(this.state.calls[3] === null) ? '-' : this.state.calls[3]} | {(this.state.makes[3] === null) ? '-' : this.state.makes[3]}</make>
-          </li>
+          {this.returnPlayerScore(0)}
+          {this.returnPlayerScore(1)}
+          {this.returnPlayerScore(2)}
+          {this.returnPlayerScore(3)}
         </ul>
 
         <hr />
@@ -423,6 +439,39 @@ export class GamePlayComponent extends Component {
         <GameScoresComponent {...this.props}  />
 
       </div>
+    );
+  }
+
+  /*
+    [returnPlayerScore]
+      Returns the list element for the scoring sheet.
+  */
+  returnPlayerScore(playerPos) {
+
+    //var showCall  = (this.props.data.currentRound().calls[playerPos] === null && this.state.calls[playerPos] === null) ? '-' : (this.props.data.currentRound().calls[playerPos] === null);
+    //var showMake  = 0;
+
+
+
+    return(
+      <li className={this.nameClass(playerPos)}>
+        <name>
+          {this.props.data.players[playerPos].name}
+        </name>
+        <score>
+          {this.props.data.currentRound().scores[playerPos] || 0}
+        </score>
+        {(this.props.data.currentRound().status == 0)
+        ? // Saving Calls (no make data)
+          <activity className={this.makeClass(playerPos)}>
+            {(this.state.calls[playerPos] === null) ? '-' : this.state.calls[playerPos]} | -
+          </activity>
+        : // Saving Results (call data should come from database)
+          <activity className={this.makeClass(playerPos)}>
+            {this.props.data.currentRound().calls[playerPos]} | {(this.state.makes[playerPos] === null) ? '-' : this.state.makes[playerPos]}
+          </activity>
+        }
+      </li>
     );
   }
 
@@ -468,8 +517,8 @@ export class GamePlayComponent extends Component {
   returnMakeKeypad() {
 
     var self = this;
-    var keypadNote = 'Result for ' + this.props.data.players[this.state.keypad_player].name + ' (Called ' + this.props.data.currentRound().calls[this.state.keypad_player] + ')';
-    var keypadCount = ' [' + (+this.state.keypad_confirm + this.state.calls.reduce(function(a, b) { return a + b; })) + '/13]';
+    var keypadNote = 'Result for ' + this.props.data.players[this.state.keypad_player].name + ' (Called ' + this.props.data.currentRound().calls[this.state.keypad_player] + ') ';
+    var keypadCount = ' [' + (+this.state.keypad_confirm + this.state.makes.reduce(function(a, b) { return a + b; })) + '/13]';
 
     return(
       <ul className="keypad keypad-makes">
