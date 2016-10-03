@@ -65,8 +65,19 @@ button {
   margin: 0;
   padding: 0.5rem 1rem;
   border: 1px solid #555;
-  background: #EEE;
+  background: linear-gradient(to bottom, #EEE 0%,#DDD 50%);
   font-size: 0.9rem;
+}
+
+button:disabled {
+  color: #888;
+  background: #F0F0F0;
+  text-shadow: 0 0 2px #FFF;
+  border: 1px solid #AAA;
+}
+
+button.selected {
+  background: #AAA;
 }
 
 hr {

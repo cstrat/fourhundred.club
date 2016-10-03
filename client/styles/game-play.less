@@ -30,8 +30,7 @@
 
       name,
       score,
-      call,
-      make {
+      activity {
         display: block;
         margin: 0.2rem 0;
       }
@@ -40,16 +39,16 @@
         font-weight: bold;
       }
 
-      make {
+      activity {
         padding-bottom: 0.25rem;
       }
 
-      make.made {
+      activity.made {
         background: #CFC;
         border-radius: 10px;
       }
 
-      make.miss {
+      activity.miss {
         background: #EEE;
         border-radius: 10px;
       }
@@ -60,7 +59,7 @@
 
       score::before,
       call::before,
-      make::before {
+      activity::before {
         padding: 0.25rem 0;
 
         display: block;
@@ -69,8 +68,7 @@
       }
 
       score::before { content: 'SCORE'; }
-      call::before { content: 'CALL'; }
-      make::before { content: 'CALL | MADE'; }
+      activity::before { content: 'CALL | MADE'; }
 
     }
 
@@ -100,32 +98,31 @@ ul.keypad {
     width: 100%;
 
     button {
-      border: 1px solid #555;
       border-left: none;
-      background: #EEE;
     }
 
     button:first-child {
       border-left: 1px solid #555;
     }
 
-    button.selected {
-      background: #999;
-    }
-
     button:disabled {
-      background: #FEE;
-      text-decoration: line-through;
+      border-color: #555;
     }
   }
 
-  li.special-row {
+  li.special-action {
     padding-top: 1rem;
     text-align: left;
 
     button {
-      width: 30%;
+      min-width: 33%;
+      max-width: 50%;
     }
+  }
+
+  li.note {
+    font-size: 0.85rem;
+    color: #333;
   }
 
 }
@@ -160,9 +157,6 @@ ul.keypad-makes {
   }
 }
 
-div.action-bar:disabled {
-  pointer-events: none;
-}
 
 div.action-bar {
   text-align: center;
@@ -175,19 +169,14 @@ div.action-bar {
     margin: 0 0.5rem;
   }
 
-  button:disabled {
-    text-decoration: line-through;
-    background: #FEE;
-  }
-
   button.throw {
     border: 1px solid #900;
     color: #900;
   }
 
-  button.throw.selected {
-    box-shadow: 0 0 5px #900;
-    background: #CCC;
+  button.throw:disabled {
+    color: #955;
+    border: 1px solid #977;
   }
 
 }

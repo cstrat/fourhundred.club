@@ -12,8 +12,7 @@ import { GameNotFoundComponent } from '../components/game-not-found';
 import { GameReadyComponent } from '../components/game-ready';
 import { GameOverComponent } from '../components/game-over';
 
-import { GamePlayCallsComponent } from '../components/game-play-calls';
-import { GamePlayMakesComponent } from '../components/game-play-makes';
+import { GamePlayComponent } from '../components/game-play';
 import { GameScoresComponent } from '../components/game-scores';
 
 
@@ -60,6 +59,8 @@ class ScoreGame extends Component {
 
     // Game is in flight!
     if (this.props.data.status == 1) {
+
+      return (<GamePlayComponent {...this.props} />);
 
       switch (this.props.data.currentRound().status) {
 
