@@ -19,6 +19,7 @@ Once I get the app up and running completely, I will post a proper `readme` here
 - [ ] build a way to email those stats to players
 - [ ] setup an account system to let players login and keep their games together
 - [ ] update the cron to only delete games setup by unregistered users
+- [ ] need to add a way to roll back a round in the event of bad-data entry or foul play
 
 
 
