@@ -31,6 +31,7 @@ export class GamePlayComponent extends Component {
     this.keypadEnter          = this.keypadEnter.bind(this);
     this.keypadDisable        = this.keypadDisable.bind(this);
     this.keypadSelected       = this.keypadSelected.bind(this);
+    this.keypadTimeout        = this.keypadTimeout.bind(this);
 
     this.returnPlayerScore    = this.returnPlayerScore.bind(this);
     this.returnCallKeypad     = this.returnCallKeypad.bind(this);
@@ -111,9 +112,11 @@ export class GamePlayComponent extends Component {
         this.setState(
           {
             keypad:         false,
-            keypad_player:  null
+            keypad_player:  null,
+            data_loading:   true
           }
         );
+        Meteor.setTimeout(this.keypadTimeout, 1500);
       }
 
     }else{
@@ -176,6 +179,16 @@ export class GamePlayComponent extends Component {
         return true;
       }
     }
+  }
+
+
+  /*
+    [keypadTimeout]
+      Just a timer to delay the buttons from being actionable.
+      Stops errors with button mashing.
+  */
+  keypadTimeout() {
+    this.setState({ data_loading: false })
   }
 
 
@@ -301,7 +314,7 @@ export class GamePlayComponent extends Component {
           throw_selected: true
         }
       );
-      setTimeout(this.throwRound_timeout, 1500);
+      Meteor.setTimeout(this.throwRound_timeout, 3000);
     }
   }
 
@@ -368,24 +381,47 @@ export class GamePlayComponent extends Component {
       Provide status notes to go with the current status of the game.
   */
   statusNote() {
+    // If the throw round button is selected, show this warning
     if (this.state.throw_selected) {
       return('Throwing round will advance the dealer and no change to scores');
     }
 
-    if (this.state.calls.includes(null)) {
-      return('Players yet to make their calls');
+    // Call round!
+    if (this.props.data.currentRound().status == 0) {
+
+      // If its the first round and not all calls are logged
+      if (this.state.calls.includes(null)) {
+        return('Players yet to make their calls');
+      }
+
+      let minimumNeeded = this.props.data.minimumCall();
+      let totalCalled = this.state.calls.reduce(function(a, b) { return a + b; });
+
+      if (totalCalled < minimumNeeded) { return(`Round will be thrown. ${totalCalled} called.`); }
+
+      if (totalCalled > 14) { return(`This will be fun!! ${totalCalled} called.`); }
+      if (totalCalled > 13) { return(`Somebody won\'t make it... ${totalCalled} called.`); }
+      if (totalCalled > 12) { return(`Going to be a close one. ${totalCalled} called.`); }
+
+      return ('Game on! (' + totalCalled + ' called)');
     }
 
-    let minimumNeeded = this.props.data.minimumCall();
-    let totalCalled = this.state.calls.reduce(function(a, b) { return a + b; });
+    // Result Round
+    if (this.props.data.currentRound().status == 1) {
+      // If the game has played and results need to be saved
+      if (this.state.makes.includes(null)) {
+        return('Record the results for this round.');
+      }
 
-    if (totalCalled < minimumNeeded) { return(`Round will be thrown. ${totalCalled} called.`); }
+      if (!this.state.makes.includes(null) && this.state.makes.reduce(function(a, b) { return a + b; }) !== 13) {
+        return('Whoops, total must equal 13. Try again.');
+      }
 
-    if (totalCalled > 14) { return(`This will be fun!! ${totalCalled} called.`); }
-    if (totalCalled > 13) { return(`Somebody won\'t make it... ${totalCalled} called.`); }
-    if (totalCalled > 12) { return(`Going to be a close one. ${totalCalled} called.`); }
+      return ('Save results and ' + this.props.data.players[(this.props.data.currentRound().dealer==3)?0:this.props.data.currentRound().dealer+1].name + ' deals next!');
 
-    return ('Game on! (' + totalCalled + ' called)');
+    }
+
+
   }
 
   disableActionBar() {
