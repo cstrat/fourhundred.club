@@ -165,6 +165,7 @@ Fourhundred.Club
 -----------------------------------------------------------
      If you didn't setup a game, then someone else has
        used your email address when creating a game.
+  Dont worry we won't send you any further emails anyway.
 -----------------------------------------------------------
 `
       });
