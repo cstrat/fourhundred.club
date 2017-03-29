@@ -6,6 +6,7 @@ import { Meteor } from 'meteor/meteor';
 import '../../api/games';
 import '../../api/server/games';
 import '../../api/server/cron';
+import '../../api/server/accounts';
 
 
 /*

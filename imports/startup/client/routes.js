@@ -3,6 +3,8 @@ import { Meteor } from 'meteor/meteor';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { mount } from 'react-mounter';
 
+
+
 /*
   Layouts
 */
@@ -18,8 +20,6 @@ import { AuthenticationContainer }  from '../../ui/pages/authentication';
 import { ScoreGameContainer }       from '../../ui/pages/score-game';
 import { WatchGameContainer }       from '../../ui/pages/watch-game';
 
-
-const WelcomeComponent = ({name}) => (<p>Hello, {name}</p>);
 
 
 /*
